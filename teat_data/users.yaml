@@ -1,0 +1,25 @@
+test_users:
+  # 标准用户，应该登录成功
+  - username: "standard_user"
+    password: "secret_sauce"
+    expected: true # 期待登录成功
+    role: "standard"
+
+  # 被锁定用户，应该登录失败
+  - username: "locked_out_user"
+    password: "secret_sauce"
+    expected: false # 期待登录失败
+    error_msg: "Sorry,this user has been locked out."
+    role: "locked"
+
+  # 问题用户，但能登录成功
+  - username: "problem_user"
+    password: "secret_sauce"
+    expected: true
+    role : "problem"
+
+  # 性能故障用户，但能登录成功
+  - username: "performance_glitch_user"
+    password: "secret_sauce"
+    expected: true
+    role: "performance"
