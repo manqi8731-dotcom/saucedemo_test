@@ -1,6 +1,6 @@
-selenium==4.10.0
-pytest==9.0.3
-webdriver-manager==3.8.6
+selenium==4.21.0  # 最新版本，支持新的 ChromeDriver 管理
+pytest==7.4.4
 allure-pytest==2.13.5
-requests==2.33.0
+requests==2.31.0
 pyyaml==6.0.1
+webdriver-manager==4.0.1  # 降级到稳定版本

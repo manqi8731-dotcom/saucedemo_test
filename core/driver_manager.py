@@ -1,144 +1,193 @@
 """
-智能浏览器驱动管理：
-1.自动检测操作系统
-2.自动下载对应版本的浏览器驱动
-3.支持Chrome/Firefox/Edge
-4.驱动缓存机制，避免重复下载
+Chrome 147+ 专用驱动管理器
+使用手动下载的 ChromeDriver
 """
-
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
+import selenium
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.webdriver.edge.service import Service as EdgeService
-import platform
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 import os
+import subprocess
+import re
+
+
+def get_chrome_version():
+    """获取 Chrome 版本号"""
+    try:
+        # Windows Chrome 版本检测
+        result = subprocess.run([
+            'reg', 'query',
+            'HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon',
+            '/v', 'version'
+        ], capture_output=True, text=True, shell=True)
+
+        if result.returncode == 0:
+            version_match = re.search(r'version\s+REG_SZ\s+(\d+\.\d+\.\d+\.\d+)', result.stdout)
+            if version_match:
+                return version_match.group(1)
+    except:
+        pass
+    return "147.0.7727.101"
+
 
 class DriverManager:
-    """浏览器驱动管理"""
+    """Chrome 147+ 专用驱动管理器"""
 
     def __init__(self, browser="chrome", headless=False):
-        """
-        初始化驱动管理
-        :param browser: 浏览器类型（chrome/firefox/edge）
-        :param headless: 是否无头模式
-        """
-        # 将传入的浏览器名转为小写（如 "Chrome" → "chrome"）
         self.browser = browser.lower()
-        # 保存是否使用无头模式（True = 后台运行，不显示浏览器窗口）
         self.headless = headless
-        # 初始化 driver 为 None，表示此时浏览器驱动尚未创建
         self.driver = None
+
+        # 检查 ChromeDriver 是否存在
+        self.chromedriver_path = self._find_chromedriver()
+        if not self.chromedriver_path:
+            raise FileNotFoundError(
+                "❌ 未找到 ChromeDriver！请下载 ChromeDriver 147.0.7727.101 "
+                "并放置在 D:\\chromedriver\\ 目录下"
+            )
+
+    def _find_chromedriver(self):
+        """查找 ChromeDriver 路径"""
+        possible_paths = [
+            r"D:\chromedriver\chromedriver.exe",
+            r"D:\chromedriver\chromedriver-win64\chromedriver.exe",
+            r"C:\chromedriver\chromedriver.exe",
+            os.path.join(os.path.dirname(__file__), "chromedriver.exe")
+        ]
+
+        for path in possible_paths:
+            if os.path.exists(path):
+                print(f"✅ 找到 ChromeDriver: {path}")
+                return path
+
+        print("❌ 未找到 ChromeDriver，请按以下步骤操作：")
+        print("1. 访问: https://googlechromelabs.github.io/chrome-for-testing/")
+        print("2. 搜索版本: 147.0.7727.101")
+        print("3. 下载: ChromeDriver - Win64")
+        print("4. 解压到: D:\\chromedriver\\chromedriver.exe")
+        return None
 
     def get_driver(self):
         """获取浏览器驱动实例"""
         if self.driver is None:
             if self.browser == "chrome":
                 self.driver = self._setup_chrome()
-            elif self.browser == "firefox":
-                self.driver = self._setup_firefox()
-            elif self.browser == "edge":
-                self.driver = self._setup_edge()
             else:
-                raise ValueError(f"不支持的浏览器类型：{self.browser}")
+                raise ValueError(f"不支持的浏览器类型: {self.browser}")
 
-        # 设置窗口最大化
         self.driver.maximize_window()
         return self.driver
 
     def _setup_chrome(self):
-        """配置Chrome浏览器"""
-        options = webdriver.ChromeOptions()
+        """配置 Chrome 浏览器 - Chrome 147+ 专用"""
+        # 创建服务对象，指定 ChromeDriver 路径
+        service = Service(self.chromedriver_path)
 
-        # 无头模式配置
+        options = Options()
+
+        # 基础配置
         if self.headless:
             options.add_argument("--headless=new")
             options.add_argument("--disable-gpu")
-            # 关闭沙箱安全机制（Linux/Docker 环境必需，避免权限问题）
             options.add_argument("--no-sandbox")
-            # 禁用 /dev/shm 共享内存（解决 Docker/容器环境中内存不足导致的崩溃）
             options.add_argument("--disable-dev-shm-usage")
 
-        # 常用优化参数
+        # Chrome 147+ 专用配置
         options.add_argument("--start-maximized")
-        # 禁用所有扩展插件（避免插件干扰自动化测试）
         options.add_argument("--disable-extensions")
-        # 禁用信息提示条（如"Chrome 正受到自动测试软件的控制"提示）
         options.add_argument("--disable-infobars")
-        # 禁用信息提示条（如"Chrome 正受到自动测试软件的控制"提示）
         options.add_argument("--disable-notifications")
-        # 忽略 SSL 证书错误（测试 HTTPS 自签名证书网站时必需）
         options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--ignore-ssl-errors")
+        options.add_argument("--allow-running-insecure-content")
+        options.add_argument("--disable-web-security")
 
-        # 设置用户代理
-        """
-        反反爬
-        1.伪装真实浏览器：某些网站会检测Selenium,设置UA降低被识别的概率
-        2.模拟特定环境：固定Windows + Chrome 120的标识，避免被识别为自动化工具
-        """
-        user_agent = ("Mozilla/5.0(Windows NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        # 解决新版本 Chrome 特有问题
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_argument("--disable-background-timer-throttling")
+        options.add_argument("--disable-renderer-backgrounding")
+        options.add_argument("--disable-backgrounding-occluded-windows")
+        options.add_argument("--disable-ipc-flooding-protection")
+        options.add_argument("--disable-backgrounding-occluded-windows")
+        options.add_argument("--disable-renderer-backgrounding")
+        options.add_argument("--enable-features=NetworkServiceInProcess")
+        options.add_argument("--disable-features=VizDisplayCompositor")
+
+        # 用户代理
+        user_agent = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{get_chrome_version()} Safari/537.36"
         options.add_argument(f"--user-agent={user_agent}")
 
-        # 自动下载驱动并配置服务
-        service = ChromeService(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=options)
-        return driver
+        # 临时目录
+        temp_dir = os.path.join(os.getenv('TEMP'), f'selenium_{os.getpid()}')
+        os.makedirs(temp_dir, exist_ok=True)
+        options.add_argument(f"--user-data-dir={temp_dir}")
 
-    def _setup_firefox(self):
-        """配置Firework浏览器"""
-        options = webdriver.FirefoxOptions()
+        try:
+            # 使用手动指定的 ChromeDriver 启动
+            driver = webdriver.Chrome(service=service, options=options)
 
-        if self.headless:
-            options.add_argument("--headless")
+            # 隐藏 webdriver 特征
+            driver.execute_script("""
+                Object.defineProperty(navigator, 'webdriver', {
+                    get: () => undefined
+                });
+                delete navigator.__proto__.webdriver;
+            """)
 
-        # 禁用网页通知弹窗（类似 Chrome 的 --disable-notifications）
-        options.set_preference("dom.webnotifications.enabled", False)
-        # 静音所有媒体（防止网页自动播放声音干扰）
-        options.set_preference("media.volume_scale", "0.0")
+            return driver
 
-        # 自动下载并安装 GeckoDriver（Firefox 的 WebDriver）
-        service = FirefoxService(GeckoDriverManager().install())
-        # 创建 Firefox 浏览器实例，应用所有配置
-        driver = webdriver.Firefox(service=service, options=options)
-        # 返回配置好的驱动对象
-        return driver
-
-    def _setup_edge(self):
-        """配置Edge浏览器"""
-        options = webdriver.EdgeOptions()
-
-        if self.headless:
-            options.add_argument("--headless=new")
-
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-extensions")
-
-        service = EdgeService(EdgeChromiumDriverManager().install())
-        driver = webdriver.Edge(service=service, options=options)
-        return driver
+        except Exception as e:
+            print(f"❌ Chrome 启动失败: {e}")
+            print("💡 提示：可能需要以管理员身份运行 PyCharm")
+            raise e
 
     def quit(self):
         """关闭浏览器驱动"""
         if self.driver:
-            self.driver.quit()
+            try:
+                self.driver.quit()
+            except:
+                pass
             self.driver = None
 
-# 使用示例
+
+def test_driver():
+    """测试驱动是否正常工作"""
+    print(f"🚀 正在测试 ChromeDriver (Chrome {get_chrome_version()})")
+
+    try:
+        manager = DriverManager(browser="chrome", headless=False)
+        driver = manager.get_driver()
+
+        print("✅ Chrome 启动成功！")
+
+        # 测试访问
+        driver.get("https://www.google.com")
+        print(f"✅ Google 访问成功！标题: {driver.title[:50]}...")
+
+        driver.get("https://www.saucedemo.com")
+        print(f"✅ SauceDemo 访问成功！标题: {driver.title}")
+
+        print("🎉 驱动测试完全成功！")
+        manager.quit()
+        return True
+
+    except Exception as e:
+        print(f"❌ 测试失败: {e}")
+        print("\n💡 建议解决方案：")
+        print("1. 以管理员身份运行 PyCharm")
+        print("2. 确保 ChromeDriver 版本与 Chrome 版本完全匹配")
+        print("3. 检查防火墙设置")
+        return False
+
+
 if __name__ == "__main__":
-    # 测试驱动管理器
-    # 创建一个DriverManager类的对象，名为manager
-    manager = DriverManager(browser="chrome", headless=False)
-    driver = manager.get_driver()
-    driver.get("https://www.saucedemo.com")
-    print(f"成功打开：{driver.title}")
-    manager.quit()
-
-
-
-
-
-
+    success = test_driver()
+    if success:
+        print("\n🎉 所有测试通过！可以继续开发。")
+    else:
+        print("\n❌ 请按照提示解决问题后再试。")
 
 
