@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。">
-      <change afterPath="$PROJECT_DIR$/pages/cart_page.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/inventory_page.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_cases/test_cart.py" afterDir="false" />
+    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第4次提交：增加3个文件&#10;1、cart_page.py&#10;2、inventory_page.py&#10;3、test_cart.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_data/users.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/test_data/users.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/inventory_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/inventory_page.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +58,7 @@
     "last_opened_file_path": "D:/PythonWorkSpace/saucedemo_test"
   }
 }]]></component>
-  <component name="RunManager" selected="Python 测试.pytest (test_login.py 内)">
+  <component name="RunManager" selected="Python 测试.pytest (test_cart.py 内)">
     <configuration name="login_page" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="saucedemo_test" />
       <option name="ENV_FILES" value="" />
@@ -126,8 +123,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.login_page" />
         <item itemvalue="Python 测试.pytest (test_cart.py 内)" />
+        <item itemvalue="Python.login_page" />
       </list>
     </recent_temporary>
   </component>
@@ -163,7 +160,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776668381479</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="第4次提交：增加3个文件&#10;1、cart_page.py&#10;2、inventory_page.py&#10;3、test_cart.py">
+      <option name="closed" value="true" />
+      <created>1776672438733</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1776672438733</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -180,6 +185,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="第2次提交，着重解决chrome驱动问题：因chrome版本太新，改为手动下载驱动" />
     <MESSAGE value="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。" />
-    <option name="LAST_COMMIT_MESSAGE" value="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。" />
+    <MESSAGE value="第4次提交：增加3个文件&#10;1、cart_page.py&#10;2、inventory_page.py&#10;3、test_cart.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="第4次提交：增加3个文件&#10;1、cart_page.py&#10;2、inventory_page.py&#10;3、test_cart.py" />
   </component>
 </project>

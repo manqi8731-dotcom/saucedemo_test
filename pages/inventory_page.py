@@ -112,89 +112,66 @@ class InventoryPage(BasePage):
 
     def add_to_cart_by_name(self, product_name):
         """
-        根据商品名称添加到购物车
+        根据商品名称添加到购物车（使用 data-test 属性，最可靠）
 
         Args:
             product_name (str): 商品名称，如 "Sauce Labs Backpack"
 
         Returns:
             bool: 操作是否成功
-
-        Example:
-            page.add_to_cart_by_name("Sauce Labs Backpack")
         """
         try:
-            # 定位商品卡片：通过商品名称找到其父容器，再找到添加按钮
-            # XPath 逻辑：找到包含指定文本的商品名称 -> 向上找到商品卡片容器 -> 找到添加按钮
-            add_button_locator = (
-                By.XPATH,
-                f"//div[@class='inventory_item_name' and text()='{product_name}']"
-                "/ancestor::div[@class='inventory_item']"
-                "//button[contains(text(),'Add to cart')]"
+            # 将商品名称转换为 data-test 格式：小写 + 去空格 + 连字符
+            # 示例: "Sauce Labs Backpack" -> "sauce-labs-backpack"
+            data_test_value = product_name.lower().replace(" ", "-")
+            button_locator = (
+                By.CSS_SELECTOR,
+                f"button[data-test='add-to-cart-{data_test_value}']"
             )
 
             # 点击添加按钮
-            self.click_element(add_button_locator)
+            self.click_element(button_locator)
 
-            # 验证按钮文本已变为 "Remove"
-            remove_button_locator = (
-                By.XPATH,
-                f"//div[@class='inventory_item_name' and text()='{product_name}']"
-                "/ancestor::div[@class='inventory_item']"
-                "//button[contains(text(),'Remove')]"
+            # 验证按钮已变为 Remove（通过 class 或 text）
+            # Sauce Demo 中，Remove 按钮的 data-test 是 remove-{...}
+            remove_locator = (
+                By.CSS_SELECTOR,
+                f"button[data-test='remove-{data_test_value}']"
             )
-            if self.is_element_visible(remove_button_locator):
+
+            if self.is_element_visible(remove_locator):
                 logger.info(f"✅ 商品 '{product_name}' 已成功添加到购物车")
                 return True
             else:
-                logger.warning(f"⚠️ 商品 '{product_name}' 添加后未检测到 Remove 按钮")
-                return True  # 按钮已点击，认为操作成功
+                logger.warning(f"⚠️ 商品 '{product_name}' 添加后未检测到 Remove 按钮，但按钮已点击")
+                return True  # 按钮已点击，认为成功
 
         except Exception as e:
             logger.error(f"❌ 添加商品 '{product_name}' 到购物车失败: {str(e)}")
+            # 截图调试（可选）
+            # self.driver.save_screenshot(f"screenshots/add_failed_{product_name}.png")
             return False
 
     def remove_from_cart_by_name(self, product_name):
-        """
-        根据商品名称从购物车中移除
-
-        Args:
-            product_name (str): 商品名称
-
-        Returns:
-            bool: 操作是否成功
-
-        Example:
-            page.remove_from_cart_by_name("Sauce Labs Backpack")
-        """
         try:
-            # 定位移除按钮
-            remove_button_locator = (
-                By.XPATH,
-                f"//div[@class='inventory_item_name' and text()='{product_name}']"
-                "/ancestor::div[@class='inventory_item']"
-                "//button[contains(text(),'Remove')]"
+            data_test_value = product_name.lower().replace(" ", "-")
+            remove_locator = (
+                By.CSS_SELECTOR,
+                f"button[data-test='remove-{data_test_value}']"
             )
+            self.click_element(remove_locator)
 
-            # 点击移除按钮
-            self.click_element(remove_button_locator)
-
-            # 验证按钮文本已变回 "Add to cart"
-            add_button_locator = (
-                By.XPATH,
-                f"//div[@class='inventory_item_name' and text()='{product_name}']"
-                "/ancestor::div[@class='inventory_item']"
-                "//button[contains(text(),'Add to cart')]"
+            # 验证变回 Add 按钮
+            add_locator = (
+                By.CSS_SELECTOR,
+                f"button[data-test='add-to-cart-{data_test_value}']"
             )
-            if self.is_element_visible(add_button_locator):
+            if self.is_element_visible(add_locator):
                 logger.info(f"✅ 商品 '{product_name}' 已成功从购物车移除")
                 return True
-            else:
-                logger.warning(f"⚠️ 商品 '{product_name}' 移除后未检测到 Add to cart 按钮")
-                return True
-
+            return True
         except Exception as e:
-            logger.error(f"❌ 从购物车移除商品 '{product_name}' 失败: {str(e)}")
+            logger.error(f"❌ 移除商品 '{product_name}' 失败: {e}")
             return False
 
     def is_product_in_cart(self, product_name):
