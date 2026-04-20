@@ -72,44 +72,31 @@ class InventoryPage(BasePage):
 
     def get_cart_count(self):
         """
-        获取购物车中的商品数量
+        获取购物车徽章显示的数量
 
         Returns:
-            int: 购物车商品数量，如果购物车为空则返回 0
-
-        Example:
-            count = page.get_cart_count()  # 返回 3
+            int: 购物车商品数量（0 表示空）
         """
         try:
-            if self.is_element_visible(self.SHOPPING_CART_BADGE):
-                count_text = self.get_text(self.SHOPPING_CART_BADGE)
-                count = int(count_text)
+            cart_badge_locator = (By.CLASS_NAME, "shopping_cart_badge")
+
+            # 检查徽章是否存在
+            if self.is_element_visible(cart_badge_locator):
+                count_text = self.driver.find_element(*cart_badge_locator).text.strip()
+                count = int(count_text) if count_text.isdigit() else 0
                 logger.info(f"🛒 购物车数量: {count}")
                 return count
             else:
-                logger.info("🛒 购物车为空")
+                logger.info("🛒 购物车为空（徽章不存在）")
                 return 0
+
         except Exception as e:
             logger.error(f"❌ 获取购物车数量失败: {str(e)}")
             return 0
 
-    def click_shopping_cart(self):
-        """
-        点击购物车图标，跳转到购物车页面
 
-        Returns:
-            bool: 操作是否成功
-        """
-        try:
-            self.click_element(self.SHOPPING_CART_LINK)
-            logger.info("🛒 点击购物车图标，跳转到购物车页面")
-            return True
-        except Exception as e:
-            logger.error(f"❌ 点击购物车失败: {str(e)}")
-            return False
 
     # ==================== 商品操作 ====================
-
     def add_to_cart_by_name(self, product_name):
         """
         根据商品名称添加到购物车（使用 data-test 属性，最可靠）
@@ -129,27 +116,27 @@ class InventoryPage(BasePage):
                 f"button[data-test='add-to-cart-{data_test_value}']"
             )
 
-            # 点击添加按钮
-            self.click_element(button_locator)
+            # 使用显式等待确保按钮可点击
+            from selenium.webdriver.support.ui import WebDriverWait
+            from selenium.webdriver.support import expected_conditions as EC
 
-            # 验证按钮已变为 Remove（通过 class 或 text）
-            # Sauce Demo 中，Remove 按钮的 data-test 是 remove-{...}
+            wait = WebDriverWait(self.driver, 10)
+            add_button = wait.until(EC.element_to_be_clickable(button_locator))
+            add_button.click()
+
+            # 验证按钮已变为 Remove
             remove_locator = (
                 By.CSS_SELECTOR,
                 f"button[data-test='remove-{data_test_value}']"
             )
 
-            if self.is_element_visible(remove_locator):
-                logger.info(f"✅ 商品 '{product_name}' 已成功添加到购物车")
-                return True
-            else:
-                logger.warning(f"⚠️ 商品 '{product_name}' 添加后未检测到 Remove 按钮，但按钮已点击")
-                return True  # 按钮已点击，认为成功
+            # 等待 Remove 按钮出现
+            wait.until(EC.presence_of_element_located(remove_locator))
+            logger.info(f"✅ 商品 '{product_name}' 已成功添加到购物车")
+            return True
 
         except Exception as e:
             logger.error(f"❌ 添加商品 '{product_name}' 到购物车失败: {str(e)}")
-            # 截图调试（可选）
-            # self.driver.save_screenshot(f"screenshots/add_failed_{product_name}.png")
             return False
 
     def remove_from_cart_by_name(self, product_name):
@@ -159,42 +146,79 @@ class InventoryPage(BasePage):
                 By.CSS_SELECTOR,
                 f"button[data-test='remove-{data_test_value}']"
             )
-            self.click_element(remove_locator)
+
+            from selenium.webdriver.support.ui import WebDriverWait
+            from selenium.webdriver.support import expected_conditions as EC
+
+            wait = WebDriverWait(self.driver, 10)
+            remove_button = wait.until(EC.element_to_be_clickable(remove_locator))
+            remove_button.click()
 
             # 验证变回 Add 按钮
             add_locator = (
                 By.CSS_SELECTOR,
                 f"button[data-test='add-to-cart-{data_test_value}']"
             )
-            if self.is_element_visible(add_locator):
-                logger.info(f"✅ 商品 '{product_name}' 已成功从购物车移除")
-                return True
+            wait.until(EC.presence_of_element_located(add_locator))
+            logger.info(f"✅ 商品 '{product_name}' 已成功从购物车移除")
             return True
+
         except Exception as e:
             logger.error(f"❌ 移除商品 '{product_name}' 失败: {e}")
             return False
 
+    def click_shopping_cart(self):
+        """
+        点击购物车图标进入购物车页面
+
+        Returns:
+            bool: 操作是否成功
+        """
+        try:
+            cart_locator = (By.CLASS_NAME, "shopping_cart_link")
+            self.click_element(cart_locator)
+            logger.info("✅ 已点击购物车图标，进入购物车页面")
+            return True
+        except Exception as e:
+            logger.error(f"❌ 点击购物车图标失败: {str(e)}")
+            return False
+
     def is_product_in_cart(self, product_name):
         """
-        检查指定商品是否已在购物车中（通过按钮状态判断）
+        检查商品是否已在购物车中（通过检查按钮是否变为 Remove）
 
         Args:
             product_name (str): 商品名称
 
         Returns:
-            bool: True 表示商品在购物车中，False 表示不在
+            bool: True 表示商品已在购物车中
         """
         try:
-            # 检查是否存在 Remove 按钮
-            remove_button_locator = (
-                By.XPATH,
-                f"//div[@class='inventory_item_name' and text()='{product_name}']"
-                "/ancestor::div[@class='inventory_item']"
-                "//button[contains(text(),'Remove')]"
+            # 将商品名称转换为 data-test 格式
+            data_test_value = product_name.lower().replace(" ", "-")
+
+            # 检查 Remove 按钮是否存在（表示商品已在购物车）
+            remove_locator = (
+                By.CSS_SELECTOR,
+                f"button[data-test='remove-{data_test_value}']"
             )
-            return self.is_element_visible(remove_button_locator)
+
+            # 使用显式等待检查元素是否存在
+            from selenium.webdriver.support.ui import WebDriverWait
+            from selenium.webdriver.support import expected_conditions as EC
+
+            try:
+                WebDriverWait(self.driver, 3).until(
+                    EC.presence_of_element_located(remove_locator)
+                )
+                logger.info(f"✅ 检测到商品 '{product_name}' 的 Remove 按钮，商品已在购物车中")
+                return True
+            except:
+                logger.warning(f"⚠️ 商品 '{product_name}' 的 Remove 按钮不存在，商品可能未在购物车中")
+                return False
+
         except Exception as e:
-            logger.error(f"❌ 检查商品 '{product_name}' 状态失败: {str(e)}")
+            logger.error(f"❌ 检查商品 '{product_name}' 是否在购物车中失败: {str(e)}")
             return False
 
     # ==================== 排序功能 ====================
@@ -282,7 +306,7 @@ class InventoryPage(BasePage):
 
     def click_product_name(self, product_name):
         """
-        点击商品名称，跳转到商品详情页
+        点击商品名称跳转到商品详情页
 
         Args:
             product_name (str): 商品名称
@@ -291,18 +315,34 @@ class InventoryPage(BasePage):
             bool: 操作是否成功
         """
         try:
-            # 定位商品名称链接
-            product_link_locator = (
+            # 方式 1：直接点击商品名称（如果可点击）
+            product_name_locator = (
                 By.XPATH,
-                f"//div[@class='inventory_item_name' and text()='{product_name}']"
+                f"//div[@class='inventory_item_name' and normalize-space(text())='{product_name}']"
             )
-            self.click_element(product_link_locator)
-            logger.info(f"🔍 点击商品 '{product_name}'，跳转到详情页")
-            return True
+
+            # 先尝试点击商品名称
+            try:
+                self.click_element(product_name_locator)
+                logger.info(f"✅ 已点击商品名称 '{product_name}'")
+                return True
+            except Exception as e1:
+                logger.warning(f"⚠️ 直接点击商品名称失败: {e1}，尝试点击整个商品卡片")
+
+                # 方式 2：点击整个商品卡片（更可靠）
+                product_card_locator = (
+                    By.XPATH,
+                    f"//div[@class='inventory_item_name' and normalize-space(text())='{product_name}']"
+                    "/ancestor::div[@class='inventory_item']"
+                )
+
+                self.click_element(product_card_locator)
+                logger.info(f"✅ 已点击商品卡片 '{product_name}'")
+                return True
+
         except Exception as e:
             logger.error(f"❌ 点击商品 '{product_name}' 失败: {str(e)}")
             return False
-
     def click_product_image(self, product_name):
         """
         点击商品图片，跳转到商品详情页

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第4次提交：增加3个文件&#10;1、cart_page.py&#10;2、inventory_page.py&#10;3、test_cart.py">
+    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第5次提交：&#10;针对添加商品到购物车的定位器问题，修改如下方法&#10;1、inventory_page.py中的add_to_cart_by_name()方法&#10;2、inventory_page.py中的remove_from_cart_by_name()方法">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/inventory_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/inventory_page.py" afterDir="false" />
     </list>
@@ -168,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776672438733</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="第5次提交：&#10;针对添加商品到购物车的定位器问题，修改如下方法&#10;1、inventory_page.py中的add_to_cart_by_name()方法&#10;2、inventory_page.py中的remove_from_cart_by_name()方法">
+      <option name="closed" value="true" />
+      <created>1776675318332</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776675318332</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -186,6 +194,7 @@
     <MESSAGE value="第2次提交，着重解决chrome驱动问题：因chrome版本太新，改为手动下载驱动" />
     <MESSAGE value="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。" />
     <MESSAGE value="第4次提交：增加3个文件&#10;1、cart_page.py&#10;2、inventory_page.py&#10;3、test_cart.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="第4次提交：增加3个文件&#10;1、cart_page.py&#10;2、inventory_page.py&#10;3、test_cart.py" />
+    <MESSAGE value="第5次提交：&#10;针对添加商品到购物车的定位器问题，修改如下方法&#10;1、inventory_page.py中的add_to_cart_by_name()方法&#10;2、inventory_page.py中的remove_from_cart_by_name()方法" />
+    <option name="LAST_COMMIT_MESSAGE" value="第5次提交：&#10;针对添加商品到购物车的定位器问题，修改如下方法&#10;1、inventory_page.py中的add_to_cart_by_name()方法&#10;2、inventory_page.py中的remove_from_cart_by_name()方法" />
   </component>
 </project>
