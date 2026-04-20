@@ -9,7 +9,7 @@ test_users:
   - username: "locked_out_user"
     password: "secret_sauce"
     expected: false # 期待登录失败
-    error_msg: "Sorry,this user has been locked out."
+    error_msg: "Epic sadface: Sorry, this user has been locked out."
     role: "locked"
 
   # 3.问题用户，但能登录成功

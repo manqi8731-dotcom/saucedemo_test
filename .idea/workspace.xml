@@ -4,20 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第2次提交，着重解决chrome驱动问题：因chrome版本太新，改为手动下载驱动">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。">
+      <change afterPath="$PROJECT_DIR$/pages/cart_page.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/inventory_page.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_cases/test_cart.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/base_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/driver_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/driver_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/teat_data/users.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/test_data/users.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_cases/test_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_cases/test_login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/data_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_data/users.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/test_data/users.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,19 +46,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python 测试.pytest (driver_manager.py 内).executor&quot;: &quot;Run&quot;,
-    &quot;Python 测试.pytest (test_login.py 内).executor&quot;: &quot;Run&quot;,
-    &quot;Python.base_page.executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_loader.executor&quot;: &quot;Run&quot;,
-    &quot;Python.logger.executor&quot;: &quot;Run&quot;,
-    &quot;Python.login_page.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/PythonWorkSpace/saucedemo_test&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python 测试.pytest (driver_manager.py 内).executor": "Run",
+    "Python 测试.pytest (test_cart.py 内).executor": "Run",
+    "Python 测试.pytest (test_cases 内).executor": "Run",
+    "Python 测试.pytest (test_login.py 内).executor": "Run",
+    "Python.base_page.executor": "Run",
+    "Python.data_loader.executor": "Run",
+    "Python.logger.executor": "Run",
+    "Python.login_page.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/PythonWorkSpace/saucedemo_test"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Python 测试.pytest (test_login.py 内)">
     <configuration name="login_page" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="saucedemo_test" />
@@ -78,7 +84,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest (test_login.py 内)" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest (test_cart.py 内)" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="saucedemo_test" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -91,18 +97,37 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test_cases/test_login.py&quot;" />
+      <option name="_new_target" value="&quot;D:\\PythonWorkSpace\\saucedemo_test\\test_cases\\test_cart.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest (test_login.py 内)" type="tests" factoryName="py.test" nameIsGenerated="true">
+      <module name="saucedemo_test" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (saucedemo_test)" />
+      <option name="WORKING_DIRECTORY" value="D:\PythonWorkSpace\saucedemo_test" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;D:\\PythonWorkSpace\\saucedemo_test\\test_cases\\test_login.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Python.login_page" />
       <item itemvalue="Python 测试.pytest (test_login.py 内)" />
+      <item itemvalue="Python 测试.pytest (test_cart.py 内)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python 测试.pytest (test_login.py 内)" />
         <item itemvalue="Python.login_page" />
+        <item itemvalue="Python 测试.pytest (test_cart.py 内)" />
       </list>
     </recent_temporary>
   </component>
@@ -130,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776569677176</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。">
+      <option name="closed" value="true" />
+      <created>1776668381479</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1776668381479</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -146,6 +179,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="第2次提交，着重解决chrome驱动问题：因chrome版本太新，改为手动下载驱动" />
-    <option name="LAST_COMMIT_MESSAGE" value="第2次提交，着重解决chrome驱动问题：因chrome版本太新，改为手动下载驱动" />
+    <MESSAGE value="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。" />
+    <option name="LAST_COMMIT_MESSAGE" value="第3次提交：&#10;1、出现fixture加载注入失败问题，解决方式：修改工作目录为项目根目录。&#10;2、执行test_login时，chrome浏览器出现弹窗，经多种代码改进方式，无果。" />
   </component>
 </project>
