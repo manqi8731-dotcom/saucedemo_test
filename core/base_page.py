@@ -132,6 +132,36 @@ class BasePage:
             lambda driver: driver.execute_script("return document.readyState") == "complete"
         )
 
+    def wait_for_element_visibility(self, locator, timeout=10):
+        """等待元素可见"""
+        try:
+            return WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located(locator)
+            )
+        except Exception as e:
+            # 现在可以安全使用 self.logger 了
+            self.logger.error(f"❌ 等待元素可见失败 {locator}: {e}")
+            return None
+    def wait_for_element_clickable(self, locator, timeout=10):
+        """
+        等待元素可点击
+
+        Args:
+            locator (tuple): 定位器 (By.XXX, "value")
+            timeout (int): 超时时间（秒）
+
+        Returns:
+            WebElement: 可点击的元素
+        """
+        try:
+            element = WebDriverWait(self.driver, timeout).until(
+                EC.element_to_be_clickable(locator)
+            )
+            return element
+        except Exception as e:
+            self.logger.error(f"❌ 等待元素可点击失败: {locator}, 错误: {str(e)}")
+            return None
+
     def scroll_to_element(self, locator):
         """滚动到元素位置"""
         element = self._get_element(locator)

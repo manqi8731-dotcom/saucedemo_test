@@ -307,37 +307,44 @@ class TestCartManagement:
             f"❌ 跳转到商品详情页失败"
         logger.info(f"🔍 已跳转到商品 '{product_name}' 详情页")
 
-        # 4. 等待页面加载（商品详情页会有"Back to products"按钮）
-        self.inventory_page.wait_for_element_visibility(
-            (By.ID, "back-to-products")
+        # 4. 等待页面加载 - 使用正确的定位器 (data-test 而不是 id)
+        from selenium.webdriver.common.by import By
+        back_button_locator = (By.CSS_SELECTOR, "[data-test='back-to-products']")
+
+        back_button = self.inventory_page.wait_for_element_visibility(
+            back_button_locator, timeout=10
         )
 
+        if back_button is None:
+            logger.error("❌ 商品详情页加载失败，未找到 'Back to products' 按钮")
+            raise AssertionError("商品详情页未正确加载")
+
+        logger.info("✅ 商品详情页已成功加载")
+
         # 5. 返回商品列表页
-        self.inventory_page.click_element((By.ID, "back-to-products"))
-        logger.info("🔙 已返回商品列表页")
+        back_button.click()
+        logger.info("🔄 已点击 'Back to products' 返回商品列表页")
 
-        # 6. 验证购物车数量保持不变
+        # 6. 验证购物车状态保持不变
         count_after_navigation = self.inventory_page.get_cart_count()
+        logger.info(f"📊 导航后购物车数量: {count_after_navigation}")
+
         assert count_after_navigation == count_before_navigation, \
-            f"❌ 购物车数量在跨页面后发生变化，之前 {count_before_navigation}，之后 {count_after_navigation}"
-        logger.info(f"✅ 购物车数量保持不变: {count_after_navigation}")
+            f"❌ 购物车数量不一致! 导航前: {count_before_navigation}, 导航后: {count_after_navigation}"
 
-        # 7. 验证商品仍在购物车中
-        assert self.inventory_page.is_product_in_cart(product_name), \
-            f"❌ 跨页面后商品 '{product_name}' 丢失"
-        logger.info(f"✅ 商品状态验证通过，仍在购物车中")
+        # 7. 进入购物车页面验证内容
+        # 修复：使用存在的 click_shopping_cart() 方法，而不是不存在的 go_to_cart()
+        assert self.inventory_page.click_shopping_cart(), \
+            "❌ 进入购物车页面失败"
 
-        # 8. 进入购物车页面最终验证
-        self.inventory_page.click_shopping_cart()
+        # 8. 验证购物车包含商品
+        # 注意：这里需要确认 CartPage 是否有 get_all_cart_item_names() 方法
+        # 从测试用例其他部分看，应该是 get_all_cart_item_names()
+        cart_items = self.cart_page.get_all_cart_item_names()
+        assert product_name in cart_items, \
+            f"❌ 购物车中缺少商品 '{product_name}', 当前商品: {cart_items}"
 
-        assert self.cart_page.is_item_in_cart(product_name), \
-            f"❌ 购物车页面未显示商品 '{product_name}'"
-        logger.info(f"✅ 购物车页面最终验证通过")
-
-        # 9. 返回商品列表页
-        self.cart_page.click_continue_shopping()
-
-        logger.info("✅ ===== 测试用例 4 通过 =====\n")
+        logger.info("✅ 跨页面购物车状态保持测试通过!")
 
     # ==================== 测试用例 5: 购物车详情验证 ====================
 

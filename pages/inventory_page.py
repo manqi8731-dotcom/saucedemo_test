@@ -305,109 +305,15 @@ class InventoryPage(BasePage):
     # ==================== 商品详情页跳转 ====================
 
     def click_product_name(self, product_name):
-        """
-        点击商品跳转到详情页（使用 data-test 属性，最可靠）
-
-        Args:
-            product_name (str): 商品名称
-
-        Returns:
-            bool: 操作是否成功
-        """
         try:
-            logger.info(f"🔍 尝试点击商品: '{product_name}'")
-
-            # 调试：打印页面上所有商品名称
-            try:
-                name_elements = self.driver.find_elements(By.CLASS_NAME, "inventory_item_name")
-                actual_names = [elem.text.strip() for elem in name_elements]
-                logger.info(f"🔍 页面商品列表: {actual_names}")
-
-                if product_name not in actual_names:
-                    logger.error(f"❌ 目标商品 '{product_name}' 不在页面中!")
-                    return False
-
-            except Exception as debug_e:
-                logger.warning(f"🔍 调试信息获取失败: {debug_e}")
-
-            # 方法 1: 使用商品名称的 data-test 属性（最可靠）
-            # Sauce Demo 中每个商品都有 data-test="inventory-item-name"
-            # 但我们需要找到包含特定商品名称的元素
-
-            # 方法 2: 使用 CSS 选择器，点击整个商品卡片
-            # 先找到包含商品名称的元素，然后点击其父级商品卡片
-            try:
-                # 使用 XPath 精确匹配商品名称
-                product_locator = (
-                    By.XPATH,
-                    f"//div[@class='inventory_item_name' and text()='{product_name}']"
-                )
-
-                # 等待元素可见
-                from selenium.webdriver.support.ui import WebDriverWait
-                from selenium.webdriver.support import expected_conditions as EC
-
-                product_element = WebDriverWait(self.driver, 10).until(
-                    EC.visibility_of_element_located(product_locator)
-                )
-
-                # 找到商品卡片（父元素）
-                product_card = product_element.find_element(
-                    By.XPATH,
-                    "./ancestor::div[@class='inventory_item']"
-                )
-
-                # 滚动到元素可见位置
-                self.driver.execute_script("arguments[0].scrollIntoView(true);", product_card)
-
-                # 等待元素可点击
-                WebDriverWait(self.driver, 5).until(
-                    EC.element_to_be_clickable(product_card)
-                )
-
-                # 点击商品卡片
-                product_card.click()
-
-                logger.info(f"✅ 已点击商品 '{product_name}'")
-                return True
-
-            except Exception as e1:
-                logger.warning(f"⚠️ 方法 1 失败: {str(e1)}")
-
-                # 方法 3: 备选方案 - 直接遍历所有商品卡片
-                try:
-                    product_cards = self.driver.find_elements(By.CLASS_NAME, "inventory_item")
-
-                    for card in product_cards:
-                        try:
-                            name_elem = card.find_element(By.CLASS_NAME, "inventory_item_name")
-                            if name_elem.text.strip() == product_name:
-                                # 滚动到元素
-                                self.driver.execute_script("arguments[0].scrollIntoView(true);", card)
-
-                                # 等待可点击
-                                WebDriverWait(self.driver, 5).until(
-                                    EC.element_to_be_clickable(card)
-                                )
-
-                                # 点击
-                                card.click()
-                                logger.info(f"✅ 使用备选方案点击商品 '{product_name}'")
-                                return True
-                        except Exception:
-                            continue
-
-                    logger.error(f"❌ 遍历所有商品卡片后仍未找到 '{product_name}'")
-                    return False
-
-                except Exception as e2:
-                    logger.error(f"❌ 所有方法都失败: {str(e2)}")
-                    return False
-
+            locator = (
+                By.XPATH,
+                f"//a[.//div[contains(text(), '{product_name}')]]"
+            )
+            self.click_element(locator)
+            return True
         except Exception as e:
-            logger.error(f"❌ 点击商品 '{product_name}' 失败: {str(e)}")
-            import traceback
-            logger.error(f"🔍 详细错误: {traceback.format_exc()}")
+            self.logger.error(f"❌ 点击商品名称失败 {product_name}: {e}")
             return False
     def click_product_image(self, product_name):
         """
