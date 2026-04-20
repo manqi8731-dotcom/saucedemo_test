@@ -10,6 +10,7 @@ from pages.login_page import LoginPage
 from utils.data_loader import DataLoader
 import time
 
+@pytest.mark.usefixtures("driver")
 class TestLogin:
     """登录功能测试类"""
 

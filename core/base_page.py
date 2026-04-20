@@ -38,7 +38,7 @@ class BasePage:
         """
 
         try:
-            return self.wait.untill(condition(locator))     # 轮询等待，直到满足或超时
+            return self.wait.until(condition(locator))     # 轮询等待，直到满足或超时
         except TimeoutException:
             raise TimeoutException(f"元素定位超时：{locator}")
         except Exception as e:

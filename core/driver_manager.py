@@ -115,14 +115,47 @@ class DriverManager:
         options.add_argument("--enable-features=NetworkServiceInProcess")
         options.add_argument("--disable-features=VizDisplayCompositor")
 
+        # 禁用密码管理
+        prefs = {
+            "credentials_enable_service": False,
+            "profile.password_manager_enabled": False
+        }
+        options.add_experimental_option("prefs", prefs)
+
+        # 彻底禁用密码管理、密码泄露检测、安全浏览密码警告等所有相关功能
+        options.add_argument(
+            "--disable-features="
+            "PasswordLeakDetection,"
+            "SafeBrowsingPasswordCheck,"
+            "PasswordProtectionWarningTrigger,"
+            "PasswordCheck,"
+            "ChromePasswordManagerCheckup,"
+            "SafetyCheck,"
+            "PasswordImport,"
+            "PasswordEditing,"
+            "PasswordManagerOnboarding"
+        )
+        options.add_argument("--disable-save-password-bubble")
+        options.add_argument("--disable-password-manager-reauthentication")
+
+        # 禁用密码泄露检测和安全浏览相关功能
+        options.add_argument(
+            "--disable-features=PasswordImport,PasswordLeakDetection,ChromePasswordManagerCheckup,SafetyCheck")
+        options.add_argument("--disable-save-password-bubble")
+
         # 用户代理
         user_agent = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{get_chrome_version()} Safari/537.36"
         options.add_argument(f"--user-agent={user_agent}")
 
-        # 临时目录
-        temp_dir = os.path.join(os.getenv('TEMP'), f'selenium_{os.getpid()}')
-        os.makedirs(temp_dir, exist_ok=True)
-        options.add_argument(f"--user-data-dir={temp_dir}")
+        # # 临时目录
+        # temp_dir = os.path.join(os.getenv('TEMP'), f'selenium_{os.getpid()}')
+        # os.makedirs(temp_dir, exist_ok=True)
+        # options.add_argument(f"--user-data-dir={temp_dir}")
+
+        # 使用固定的用户数据目录（项目根目录下的 chrome_profile）
+        profile_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "chrome_profile")
+        os.makedirs(profile_dir, exist_ok=True)
+        options.add_argument(f"--user-data-dir={profile_dir}")
 
         try:
             # 使用手动指定的 ChromeDriver 启动

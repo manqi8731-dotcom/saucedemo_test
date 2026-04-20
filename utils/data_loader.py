@@ -62,9 +62,9 @@ class DataLoader:
 
     @classmethod
     def get_invalid_users(cls) -> List[Dict[str, Any]]:
-        """获取无效的测试用户(excepcted: false)"""
+        """获取无效的测试用户(expected: false)"""
         users = cls.get_test_users()
-        return [user for user in users if user.get("expected", True)]
+        return [user for user in users if not user.get("expected", False)]
 
 
 # 使用示例

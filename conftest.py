@@ -32,8 +32,8 @@ def driver(request):
     scope="class"表示每个测试类只初始化一次
     """
     # 获取命令行参数
-    browser = request.config.getoptin("--browser")
-    headless = request.config.getoptin("--headless")
+    browser = request.config.getoption("--browser")
+    headless = request.config.getoption("--headless")
 
     # 初始化驱动管理器
     driver_manager = DriverManager(browser=browser, headless=headless)
@@ -54,7 +54,7 @@ def driver(request):
     except Exception as e:
         logger.error(f"关闭浏览器时出错：{str(e)}")
 
-@pytest.hookimpl(tryfirst=True, hookwrapper=-True)
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     """
     测试失败时自动截图
@@ -69,7 +69,7 @@ def pytest_runtest_makereport(item, call):
     rep = outcome.get_result()
 
     # 只处理失败的测试
-    if rep.when == "call" and rep.faild:
+    if rep.when == "call" and rep.failed:
         try:
             # 从测试类获取driver
             if hasattr(item.cls, 'driver') and item.cls.driver:
@@ -81,7 +81,7 @@ def pytest_runtest_makereport(item, call):
                 screenshots_name = f"FAILED_{test_name}_{timestamp}"
 
                 # 保存截图
-                screenshots_dir = os.path.join(os.getced(), "screenshots")
+                screenshots_dir = os.path.join(os.getcwd(), "screenshots")
                 os.makedirs(screenshots_dir, exist_ok=True)
 
                 screenshot_path = os.path.join(screenshots_dir, f"{screenshots_name}.png")
