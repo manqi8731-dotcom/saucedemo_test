@@ -32,28 +32,28 @@ class TestLogin:
             # 根据expected参数验证结果
             if user_data["expected"]:
                 # 预期：登录成功
-                assert login_page.is_logged_in(), f"❌️用户{user_data['username']}应该登录成功"
-                print(f"✅️用户{user_data['username']}登录成功")
+                assert login_page.is_logged_in(), f"用户{user_data['username']}应该登录成功"
+                print(f"用户{user_data['username']}登录成功")
 
                 # 保存成功截图
                 screenshots_path = login_page.take_login_screenshot(user_data["username"])
-                print(f"📷成功截图：{screenshots_path}")
+                print(f"成功截图：{screenshots_path}")
             else:
                 # 预期：登录失败
-                assert login_page.is_login_failed(), f"❌️用户{user_data['username']}应该登录失败"
+                assert login_page.is_login_failed(), f"用户{user_data['username']}应该登录失败"
 
                 # 验证错误提示
                 error_msg = login_page.get_error_message()
                 assert user_data["error_msg"] in error_msg, (
-                    f"❌️错误提示不匹配\n"
+                    f"错误提示不匹配\n"
                     f"预期包含：'{user_data['error_msg']}'\n"
                     f"实际得到：'{error_msg}'"
                 )
-                print(f"✅️用户{user_data['username']}登录失败，错误提示正确")
+                print(f"用户{user_data['username']}登录失败，错误提示正确")
 
                 # 保存失败截图
                 screenshots_path = login_page.take_login_screenshot(user_data["username"])
-                print(f"📷失败截图：{screenshots_path}")
+                print(f"失败截图：{screenshots_path}")
 
             # 等待一会儿，让截图更清晰
             time.sleep(1)
@@ -73,11 +73,11 @@ class TestLogin:
         actual_title = self.driver.title
 
         assert expected_title in actual_title, (
-            f"❌ 标题不匹配\n"
+            f"标题不匹配\n"
             f"预期: '{expected_title}'\n"
             f"实际: '{actual_title}'"
         )
-        print(f"✅ 页面标题正确: {actual_title}")
+        print(f"页面标题正确: {actual_title}")
 
     def test_standard_user_flow(self):
         """标准用户完整流程测试"""
@@ -86,18 +86,18 @@ class TestLogin:
         # 1. 打开登录页面
         login_page.open()
         assert "saucedemo.com" in login_page.get_current_url()
-        print("✅ 登录页面打开成功")
+        print("登录页面打开成功")
 
         # 2. 使用标准用户登录
         login_page.login_with_valid_credentials()
 
         # 3. 验证登录成功
-        assert login_page.is_logged_in(), "❌ 标准用户登录失败"
-        print("✅ 标准用户登录成功")
+        assert login_page.is_logged_in(), "标准用户登录失败"
+        print("标准用户登录成功")
 
         # 3. 验证登录成功
-        assert login_page.is_logged_in(), "❌ 标准用户登录失败"
-        print("✅ 标准用户登录成功")
+        assert login_page.is_logged_in(), "标准用户登录失败"
+        print("标准用户登录成功")
 
 # 测试运行配置
 if __name__ == "__main__":

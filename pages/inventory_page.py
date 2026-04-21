@@ -66,7 +66,7 @@ class InventoryPage(BasePage):
             driver: WebDriver 实例
         """
         super().__init__(driver)
-        logger.info("✅ 初始化 InventoryPage - 商品列表页对象")
+        logger.info("初始化 InventoryPage - 商品列表页对象")
 
     # ==================== 购物车相关操作 ====================
 
@@ -84,14 +84,14 @@ class InventoryPage(BasePage):
             if self.is_element_visible(cart_badge_locator):
                 count_text = self.driver.find_element(*cart_badge_locator).text.strip()
                 count = int(count_text) if count_text.isdigit() else 0
-                logger.info(f"🛒 购物车数量: {count}")
+                logger.info(f"购物车数量: {count}")
                 return count
             else:
-                logger.info("🛒 购物车为空（徽章不存在）")
+                logger.info("购物车为空（徽章不存在）")
                 return 0
 
         except Exception as e:
-            logger.error(f"❌ 获取购物车数量失败: {str(e)}")
+            logger.error(f"获取购物车数量失败: {str(e)}")
             return 0
 
 
@@ -132,11 +132,11 @@ class InventoryPage(BasePage):
 
             # 等待 Remove 按钮出现
             wait.until(EC.presence_of_element_located(remove_locator))
-            logger.info(f"✅ 商品 '{product_name}' 已成功添加到购物车")
+            logger.info(f"商品 '{product_name}' 已成功添加到购物车")
             return True
 
         except Exception as e:
-            logger.error(f"❌ 添加商品 '{product_name}' 到购物车失败: {str(e)}")
+            logger.error(f"添加商品 '{product_name}' 到购物车失败: {str(e)}")
             return False
 
     def remove_from_cart_by_name(self, product_name):
@@ -160,11 +160,11 @@ class InventoryPage(BasePage):
                 f"button[data-test='add-to-cart-{data_test_value}']"
             )
             wait.until(EC.presence_of_element_located(add_locator))
-            logger.info(f"✅ 商品 '{product_name}' 已成功从购物车移除")
+            logger.info(f"商品 '{product_name}' 已成功从购物车移除")
             return True
 
         except Exception as e:
-            logger.error(f"❌ 移除商品 '{product_name}' 失败: {e}")
+            logger.error(f"移除商品 '{product_name}' 失败: {e}")
             return False
 
     def click_shopping_cart(self):
@@ -177,10 +177,10 @@ class InventoryPage(BasePage):
         try:
             cart_locator = (By.CLASS_NAME, "shopping_cart_link")
             self.click_element(cart_locator)
-            logger.info("✅ 已点击购物车图标，进入购物车页面")
+            logger.info("已点击购物车图标，进入购物车页面")
             return True
         except Exception as e:
-            logger.error(f"❌ 点击购物车图标失败: {str(e)}")
+            logger.error(f"点击购物车图标失败: {str(e)}")
             return False
 
     def is_product_in_cart(self, product_name):
@@ -211,14 +211,14 @@ class InventoryPage(BasePage):
                 WebDriverWait(self.driver, 3).until(
                     EC.presence_of_element_located(remove_locator)
                 )
-                logger.info(f"✅ 检测到商品 '{product_name}' 的 Remove 按钮，商品已在购物车中")
+                logger.info(f"检测到商品 '{product_name}' 的 Remove 按钮，商品已在购物车中")
                 return True
             except:
-                logger.warning(f"⚠️ 商品 '{product_name}' 的 Remove 按钮不存在，商品可能未在购物车中")
+                logger.warning(f"商品 '{product_name}' 的 Remove 按钮不存在，商品可能未在购物车中")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ 检查商品 '{product_name}' 是否在购物车中失败: {str(e)}")
+            logger.error(f"检查商品 '{product_name}' 是否在购物车中失败: {str(e)}")
             return False
 
     # ==================== 排序功能 ====================
@@ -245,16 +245,16 @@ class InventoryPage(BasePage):
             # 选择排序选项
             if sort_option in self.SORT_OPTIONS:
                 select.select_by_visible_text(self.SORT_OPTIONS[sort_option])
-                logger.info(f"✅ 已按 '{self.SORT_OPTIONS[sort_option]}' 排序商品")
+                logger.info(f"已按 '{self.SORT_OPTIONS[sort_option]}' 排序商品")
                 # 等待排序完成（页面会重新渲染）
                 self.wait_for_page_load()
                 return True
             else:
-                logger.error(f"❌ 无效的排序选项: {sort_option}")
+                logger.error(f"无效的排序选项: {sort_option}")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ 排序商品失败: {str(e)}")
+            logger.error(f"排序商品失败: {str(e)}")
             return False
 
     def get_all_product_names(self):
@@ -271,10 +271,10 @@ class InventoryPage(BasePage):
         try:
             elements = self.find_elements(self.ITEM_NAME)
             product_names = [el.text for el in elements]
-            logger.info(f"📦 当前页面共有 {len(product_names)} 个商品")
+            logger.info(f"当前页面共有 {len(product_names)} 个商品")
             return product_names
         except Exception as e:
-            logger.error(f"❌ 获取商品名称列表失败: {str(e)}")
+            logger.error(f"获取商品名称列表失败: {str(e)}")
             return []
 
     def get_product_price(self, product_name):
@@ -296,10 +296,10 @@ class InventoryPage(BasePage):
                 "//div[@class='pricebar']/div[@class='inventory_item_price']"
             )
             price_text = self.get_text(price_locator)
-            logger.info(f"💰 商品 '{product_name}' 价格: {price_text}")
+            logger.info(f"商品 '{product_name}' 价格: {price_text}")
             return price_text
         except Exception as e:
-            logger.error(f"❌ 获取商品 '{product_name}' 价格失败: {str(e)}")
+            logger.error(f"获取商品 '{product_name}' 价格失败: {str(e)}")
             return None
 
     # ==================== 商品详情页跳转 ====================
@@ -313,7 +313,7 @@ class InventoryPage(BasePage):
             self.click_element(locator)
             return True
         except Exception as e:
-            self.logger.error(f"❌ 点击商品名称失败 {product_name}: {e}")
+            self.logger.error(f"点击商品名称失败 {product_name}: {e}")
             return False
     def click_product_image(self, product_name):
         """
@@ -334,10 +334,10 @@ class InventoryPage(BasePage):
                 "//img[@class='inventory_item_img']"
             )
             self.click_element(image_locator)
-            logger.info(f"🖼️ 点击商品 '{product_name}' 图片，跳转到详情页")
+            logger.info(f"点击商品 '{product_name}' 图片，跳转到详情页")
             return True
         except Exception as e:
-            logger.error(f"❌ 点击商品 '{product_name}' 图片失败: {str(e)}")
+            logger.error(f"点击商品 '{product_name}' 图片失败: {str(e)}")
             return False
 
     # ==================== 页面验证 ====================
@@ -353,7 +353,7 @@ class InventoryPage(BasePage):
             # 检查至少存在一个商品卡片
             return self.is_element_visible(self.INVENTORY_ITEM)
         except Exception as e:
-            logger.error(f"❌ 页面加载验证失败: {str(e)}")
+            logger.error(f"页面加载验证失败: {str(e)}")
             return False
 
     def get_total_products_count(self):
@@ -366,8 +366,8 @@ class InventoryPage(BasePage):
         try:
             elements = self.find_elements(self.INVENTORY_ITEMS)
             count = len(elements)
-            logger.info(f"📊 当前页面商品总数: {count}")
+            logger.info(f"当前页面商品总数: {count}")
             return count
         except Exception as e:
-            logger.error(f"❌ 获取商品总数失败: {str(e)}")
+            logger.error(f"获取商品总数失败: {str(e)}")
             return 0

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第8次提交：&#10;针对测试“点击商品名称跳转至商品详情页”点击失败的问题，主要作出如下修改&#10;1.在base_page.py中添加“等待元素可见”和“等待元素可点击”两个方法&#10;2.修复inventory_page.py中的click_product_name方法，修改定位方法为定位到&lt;a&gt;标签，而不是&lt;div&gt;标签">
-      <change afterPath="$PROJECT_DIR$/pages/checkout_page.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_cases/test_checkout.py" afterDir="false" />
+    <list default="true" id="eed1b289-159f-46fa-9cc7-4b3546eed49c" name="更改" comment="第9次提交：&#10;增加测试“结算流程”的用例&#10;1.增加页面封装类文件checkout_page.py&#10;2.增进测试用例文件test_checkout.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/base_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/base_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/driver_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/driver_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/cart_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/cart_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/inventory_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/inventory_page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_cases/test_cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_cases/test_cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_cases/test_checkout.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_cases/test_checkout.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +64,7 @@
     "last_opened_file_path": "D:/PythonWorkSpace/saucedemo_test"
   }
 }]]></component>
-  <component name="RunManager" selected="Python 测试.pytest in test_checkout.py">
+  <component name="RunManager" selected="Python 测试.pytest (test_login.py 内)">
     <configuration name="login_page" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="saucedemo_test" />
       <option name="ENV_FILES" value="" />
@@ -221,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776690720842</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="第9次提交：&#10;增加测试“结算流程”的用例&#10;1.增加页面封装类文件checkout_page.py&#10;2.增进测试用例文件test_checkout.py">
+      <option name="closed" value="true" />
+      <created>1776782424745</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1776782424745</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -243,6 +255,7 @@
     <MESSAGE value="第6次提交：&#10;1、删除inventory_page.py中重复定义的click_product_name方法&#10;2、在inventory_page.py中添加click_shopping_cart()方法&#10;3、修复add_ti_cart_by_name()方法等待机制不足问题" />
     <MESSAGE value="第7次提交：&#10;click_product_name 方法返回 False，点击操作失败，进行如下修复操作&#10;1.添加了显式等待 - 等待元素可见和可点击&#10;2.添加了滚动操作 - 确保元素在视口内&#10;3.多层备选方案 - 如果一种方法失败，尝试另一种&#10;4.详细的调试日志 - 可以看到页面上实际有哪些商品&#10;5.异常堆栈跟踪 - 可以看到具体的错误原因" />
     <MESSAGE value="第8次提交：&#10;针对测试“点击商品名称跳转至商品详情页”点击失败的问题，主要作出如下修改&#10;1.在base_page.py中添加“等待元素可见”和“等待元素可点击”两个方法&#10;2.修复inventory_page.py中的click_product_name方法，修改定位方法为定位到&lt;a&gt;标签，而不是&lt;div&gt;标签" />
-    <option name="LAST_COMMIT_MESSAGE" value="第8次提交：&#10;针对测试“点击商品名称跳转至商品详情页”点击失败的问题，主要作出如下修改&#10;1.在base_page.py中添加“等待元素可见”和“等待元素可点击”两个方法&#10;2.修复inventory_page.py中的click_product_name方法，修改定位方法为定位到&lt;a&gt;标签，而不是&lt;div&gt;标签" />
+    <MESSAGE value="第9次提交：&#10;增加测试“结算流程”的用例&#10;1.增加页面封装类文件checkout_page.py&#10;2.增进测试用例文件test_checkout.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="第9次提交：&#10;增加测试“结算流程”的用例&#10;1.增加页面封装类文件checkout_page.py&#10;2.增进测试用例文件test_checkout.py" />
   </component>
 </project>

@@ -2,17 +2,17 @@
 test_cart.py - 购物车管理功能测试用例
 
 测试范围：
-    1. ✅ 商品添加到购物车
-    2. ✅ 商品从购物车移除
-    3. ✅ 购物车数量显示
-    4. ✅ 跨页面购物车状态保持
-    5. ✅ 购物车详情验证
-    6. ✅ 继续购物 / 去结算功能
+    1. 商品添加到购物车
+    2. 商品从购物车移除
+    3. 购物车数量显示
+    4. 跨页面购物车状态保持
+    5. 购物车详情验证
+    6. 继续购物 / 去结算功能
 
 测试数据：
-    - 使用标准用户登录
-    - 测试多个商品的添加/移除
-    - 验证购物车徽章计数
+    1.使用标准用户登录
+    2.试多个商品的添加/移除
+    3.验证购物车徽章计数
 """
 
 import pytest
@@ -56,24 +56,24 @@ class TestCartManagement:
         # 2. 验证登录成功 - 使用 URL 检查（最可靠）
         current_url = driver.current_url
         assert "inventory.html" in current_url, \
-            f"❌ 登录失败！当前 URL: {current_url}"
-        logger.info(f"✅ 登录成功，已进入商品列表页: {current_url}")
+            f"登录失败！当前 URL: {current_url}"
+        logger.info(f"登录成功，已进入商品列表页: {current_url}")
 
         # 3. 初始化页面对象
         self.inventory_page = InventoryPage(driver)
         self.cart_page = CartPage(driver)
 
         # 4. 验证商品列表页已加载
-        assert self.inventory_page.is_page_loaded(), "❌ 商品列表页未加载"
-        logger.info("✅ 商品列表页加载成功")
+        assert self.inventory_page.is_page_loaded(), "商品列表页未加载"
+        logger.info("商品列表页加载成功")
 
         # 5. 确保购物车为空（清理前置状态）
         initial_count = self.inventory_page.get_cart_count()
         if initial_count > 0:
-            logger.warning(f"⚠️ 购物车已有 {initial_count} 个商品，将清空购物车")
+            logger.warning(f"购物车已有 {initial_count} 个商品，将清空购物车")
             self._clear_cart(driver)
 
-        logger.info("🔧 ===== 测试前置准备完成 =====\n")
+        logger.info("===== 测试前置准备完成 =====\n")
 
     def _clear_cart(self, driver):
         """
@@ -94,10 +94,10 @@ class TestCartManagement:
             # 返回商品列表页
             self.cart_page.click_continue_shopping()
 
-            logger.info(f"🧹 已清空购物车，移除 {len(cart_items)} 个商品")
+            logger.info(f"已清空购物车，移除 {len(cart_items)} 个商品")
 
         except Exception as e:
-            logger.error(f"❌ 清空购物车失败: {str(e)}")
+            logger.error(f"清空购物车失败: {str(e)}")
 
     # ==================== 测试用例 1: 添加单个商品 ====================
 
@@ -114,42 +114,42 @@ class TestCartManagement:
         测试数据：
             - 商品名称: "Sauce Labs Backpack"
         """
-        logger.info("🧪 ===== 测试用例 1: 添加单个商品到购物车 =====")
+        logger.info("===== 测试用例 1: 添加单个商品到购物车 =====")
 
         # 测试数据
         product_name = "Sauce Labs Backpack"
 
         # 1. 获取添加前的购物车数量
         initial_count = self.inventory_page.get_cart_count()
-        logger.info(f"📊 初始购物车数量: {initial_count}")
+        logger.info(f"初始购物车数量: {initial_count}")
 
         # 2. 添加商品到购物车
         assert self.inventory_page.add_to_cart_by_name(product_name), \
-            f"❌ 添加商品 '{product_name}' 失败"
+            f"添加商品 '{product_name}' 失败"
 
         # 3. 验证购物车数量增加
         new_count = self.inventory_page.get_cart_count()
         assert new_count == initial_count + 1, \
-            f"❌ 购物车数量未正确更新，期望 {initial_count + 1}，实际 {new_count}"
-        logger.info(f"✅ 购物车数量验证通过: {initial_count} -> {new_count}")
+            f"购物车数量未正确更新，期望 {initial_count + 1}，实际 {new_count}"
+        logger.info(f"购物车数量验证通过: {initial_count} -> {new_count}")
 
         # 4. 验证按钮状态已改变
         assert self.inventory_page.is_product_in_cart(product_name), \
-            f"❌ 商品 '{product_name}' 未正确添加到购物车"
-        logger.info(f"✅ 按钮状态验证通过，商品已添加")
+            f"商品 '{product_name}' 未正确添加到购物车"
+        logger.info(f"按钮状态验证通过，商品已添加")
 
         # 5. 进入购物车页面验证
         self.inventory_page.click_shopping_cart()
 
         # 6. 验证购物车页面显示该商品
         assert self.cart_page.is_item_in_cart(product_name), \
-            f"❌ 购物车页面未显示商品 '{product_name}'"
-        logger.info(f"✅ 购物车页面验证通过，包含商品: {product_name}")
+            f"购物车页面未显示商品 '{product_name}'"
+        logger.info(f"购物车页面验证通过，包含商品: {product_name}")
 
         # 7. 返回商品列表页
         self.cart_page.click_continue_shopping()
 
-        logger.info("✅ ===== 测试用例 1 通过 =====\n")
+        logger.info(" ===== 测试用例 1 通过 =====\n")
 
     # ==================== 测试用例 2: 移除单个商品 ====================
 
@@ -167,46 +167,46 @@ class TestCartManagement:
         测试数据：
             - 商品名称: "Sauce Labs Bike Light"
         """
-        logger.info("🧪 ===== 测试用例 2: 从购物车移除单个商品 =====")
+        logger.info("===== 测试用例 2: 从购物车移除单个商品 =====")
 
         # 测试数据
         product_name = "Sauce Labs Bike Light"
 
         # 1. 先添加商品到购物车
         assert self.inventory_page.add_to_cart_by_name(product_name), \
-            f"❌ 预置条件失败：添加商品 '{product_name}' 失败"
+            f"预置条件失败：添加商品 '{product_name}' 失败"
 
         # 2. 记录添加后的购物车数量
         count_before_remove = self.inventory_page.get_cart_count()
-        logger.info(f"📊 移除前购物车数量: {count_before_remove}")
+        logger.info(f"移除前购物车数量: {count_before_remove}")
 
         # 3. 从购物车移除商品
         assert self.inventory_page.remove_from_cart_by_name(product_name), \
-            f"❌ 移除商品 '{product_name}' 失败"
+            f"移除商品 '{product_name}' 失败"
 
         # 4. 验证购物车数量减少
         count_after_remove = self.inventory_page.get_cart_count()
         assert count_after_remove == count_before_remove - 1, \
-            f"❌ 购物车数量未正确减少，期望 {count_before_remove - 1}，实际 {count_after_remove}"
-        logger.info(f"✅ 购物车数量验证通过: {count_before_remove} -> {count_after_remove}")
+            f"购物车数量未正确减少，期望 {count_before_remove - 1}，实际 {count_after_remove}"
+        logger.info(f"购物车数量验证通过: {count_before_remove} -> {count_after_remove}")
 
         # 5. 验证按钮状态已恢复
         assert not self.inventory_page.is_product_in_cart(product_name), \
-            f"❌ 商品 '{product_name}' 未正确从购物车移除"
-        logger.info(f"✅ 按钮状态验证通过，商品已移除")
+            f"商品 '{product_name}' 未正确从购物车移除"
+        logger.info(f"按钮状态验证通过，商品已移除")
 
         # 6. 进入购物车页面验证
         self.inventory_page.click_shopping_cart()
 
         # 7. 验证购物车页面不包含该商品
         assert not self.cart_page.is_item_in_cart(product_name), \
-            f"❌ 购物车页面仍显示已移除的商品 '{product_name}'"
-        logger.info(f"✅ 购物车页面验证通过，不包含商品: {product_name}")
+            f"购物车页面仍显示已移除的商品 '{product_name}'"
+        logger.info(f"购物车页面验证通过，不包含商品: {product_name}")
 
         # 8. 返回商品列表页
         self.cart_page.click_continue_shopping()
 
-        logger.info("✅ ===== 测试用例 2 通过 =====\n")
+        logger.info("===== 测试用例 2 通过 =====\n")
 
     # ==================== 测试用例 3: 添加多个商品 ====================
 
@@ -223,7 +223,7 @@ class TestCartManagement:
         测试数据：
             - 商品列表: ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"]
         """
-        logger.info("🧪 ===== 测试用例 3: 添加多个商品到购物车 =====")
+        logger.info("===== 测试用例 3: 添加多个商品到购物车 =====")
 
         # 测试数据
         products = [
@@ -235,14 +235,14 @@ class TestCartManagement:
         # 1. 依次添加所有商品
         for product in products:
             assert self.inventory_page.add_to_cart_by_name(product), \
-                f"❌ 添加商品 '{product}' 失败"
-            logger.info(f"✅ 已添加商品: {product}")
+                f"添加商品 '{product}' 失败"
+            logger.info(f"已添加商品: {product}")
 
         # 2. 验证购物车徽章显示正确数量
         cart_count = self.inventory_page.get_cart_count()
         assert cart_count == len(products), \
-            f"❌ 购物车数量不正确，期望 {len(products)}，实际 {cart_count}"
-        logger.info(f"✅ 购物车徽章数量验证通过: {cart_count}")
+            f"购物车数量不正确，期望 {len(products)}，实际 {cart_count}"
+        logger.info(f"购物车徽章数量验证通过: {cart_count}")
 
         # 3. 进入购物车页面
         self.inventory_page.click_shopping_cart()
@@ -250,28 +250,28 @@ class TestCartManagement:
         # 4. 验证购物车包含所有商品
         cart_items = self.cart_page.get_all_cart_item_names()
         assert len(cart_items) == len(products), \
-            f"❌ 购物车商品数量不正确，期望 {len(products)}，实际 {len(cart_items)}"
+            f"购物车商品数量不正确，期望 {len(products)}，实际 {len(cart_items)}"
 
         for product in products:
             assert product in cart_items, \
-                f"❌ 购物车缺少商品: {product}"
-            logger.info(f"✅ 购物车包含商品: {product}")
+                f"购物车缺少商品: {product}"
+            logger.info(f"购物车包含商品: {product}")
 
         # 5. 验证每个商品的详细信息
         item_details = self.cart_page.get_cart_item_details()
-        logger.info(f"📋 购物车商品详情: {item_details}")
+        logger.info(f"购物车商品详情: {item_details}")
 
         # 6. 验证商品数量均为 1
         for detail in item_details:
             assert detail["quantity"] == "1", \
-                f"❌ 商品 '{detail['name']}' 数量不正确，期望 '1'，实际 '{detail['quantity']}'"
+                f"商品 '{detail['name']}' 数量不正确，期望 '1'，实际 '{detail['quantity']}'"
 
-        logger.info("✅ 所有商品数量验证通过")
+        logger.info("所有商品数量验证通过")
 
         # 7. 返回商品列表页
         self.cart_page.click_continue_shopping()
 
-        logger.info("✅ ===== 测试用例 3 通过 =====\n")
+        logger.info("===== 测试用例 3 通过 =====\n")
 
     # ==================== 测试用例 4: 跨页面购物车状态保持 ====================
 
@@ -289,23 +289,23 @@ class TestCartManagement:
         测试数据：
             - 商品名称: "Sauce Labs Fleece Jacket"
         """
-        logger.info("🧪 ===== 测试用例 4: 跨页面购物车状态保持 =====")
+        logger.info("===== 测试用例 4: 跨页面购物车状态保持 =====")
 
         # 测试数据
         product_name = "Sauce Labs Fleece Jacket"
 
         # 1. 添加商品到购物车
         assert self.inventory_page.add_to_cart_by_name(product_name), \
-            f"❌ 添加商品 '{product_name}' 失败"
+            f"添加商品 '{product_name}' 失败"
 
         # 2. 记录购物车数量
         count_before_navigation = self.inventory_page.get_cart_count()
-        logger.info(f"📊 导航前购物车数量: {count_before_navigation}")
+        logger.info(f"导航前购物车数量: {count_before_navigation}")
 
         # 3. 跳转到商品详情页（通过点击商品名称）
         assert self.inventory_page.click_product_name(product_name), \
-            f"❌ 跳转到商品详情页失败"
-        logger.info(f"🔍 已跳转到商品 '{product_name}' 详情页")
+            f"跳转到商品详情页失败"
+        logger.info(f"已跳转到商品 '{product_name}' 详情页")
 
         # 4. 等待页面加载 - 使用正确的定位器 (data-test 而不是 id)
         from selenium.webdriver.common.by import By
@@ -316,35 +316,35 @@ class TestCartManagement:
         )
 
         if back_button is None:
-            logger.error("❌ 商品详情页加载失败，未找到 'Back to products' 按钮")
+            logger.error("商品详情页加载失败，未找到 'Back to products' 按钮")
             raise AssertionError("商品详情页未正确加载")
 
-        logger.info("✅ 商品详情页已成功加载")
+        logger.info("商品详情页已成功加载")
 
         # 5. 返回商品列表页
         back_button.click()
-        logger.info("🔄 已点击 'Back to products' 返回商品列表页")
+        logger.info("已点击 'Back to products' 返回商品列表页")
 
         # 6. 验证购物车状态保持不变
         count_after_navigation = self.inventory_page.get_cart_count()
-        logger.info(f"📊 导航后购物车数量: {count_after_navigation}")
+        logger.info(f"导航后购物车数量: {count_after_navigation}")
 
         assert count_after_navigation == count_before_navigation, \
-            f"❌ 购物车数量不一致! 导航前: {count_before_navigation}, 导航后: {count_after_navigation}"
+            f"购物车数量不一致! 导航前: {count_before_navigation}, 导航后: {count_after_navigation}"
 
         # 7. 进入购物车页面验证内容
         # 修复：使用存在的 click_shopping_cart() 方法，而不是不存在的 go_to_cart()
         assert self.inventory_page.click_shopping_cart(), \
-            "❌ 进入购物车页面失败"
+            "进入购物车页面失败"
 
         # 8. 验证购物车包含商品
         # 注意：这里需要确认 CartPage 是否有 get_all_cart_item_names() 方法
         # 从测试用例其他部分看，应该是 get_all_cart_item_names()
         cart_items = self.cart_page.get_all_cart_item_names()
         assert product_name in cart_items, \
-            f"❌ 购物车中缺少商品 '{product_name}', 当前商品: {cart_items}"
+            f"购物车中缺少商品 '{product_name}', 当前商品: {cart_items}"
 
-        logger.info("✅ 跨页面购物车状态保持测试通过!")
+        logger.info("跨页面购物车状态保持测试通过!")
 
     # ==================== 测试用例 5: 购物车详情验证 ====================
 
@@ -362,7 +362,7 @@ class TestCartManagement:
             - 商品名称: "Sauce Labs Onesie"
             - 期望价格: "$7.99"
         """
-        logger.info("🧪 ===== 测试用例 5: 购物车商品详情验证 =====")
+        logger.info("===== 测试用例 5: 购物车商品详情验证 =====")
 
         # 测试数据
         product_name = "Sauce Labs Onesie"
@@ -370,14 +370,14 @@ class TestCartManagement:
 
         # 1. 添加商品到购物车
         assert self.inventory_page.add_to_cart_by_name(product_name), \
-            f"❌ 添加商品 '{product_name}' 失败"
+            f"添加商品 '{product_name}' 失败"
 
         # 2. 进入购物车页面
         self.inventory_page.click_shopping_cart()
 
         # 3. 获取商品详细信息
         item_details = self.cart_page.get_cart_item_details()
-        assert len(item_details) > 0, "❌ 购物车中无商品详情"
+        assert len(item_details) > 0, "购物车中无商品详情"
 
         # 4. 查找目标商品
         target_item = None
@@ -386,33 +386,33 @@ class TestCartManagement:
                 target_item = item
                 break
 
-        assert target_item is not None, f"❌ 未找到商品 '{product_name}' 的详情"
-        logger.info(f"📋 找到商品详情: {target_item}")
+        assert target_item is not None, f"未找到商品 '{product_name}' 的详情"
+        logger.info(f"找到商品详情: {target_item}")
 
         # 5. 验证商品名称
         assert target_item["name"] == product_name, \
-            f"❌ 商品名称不正确，期望 '{product_name}'，实际 '{target_item['name']}'"
-        logger.info(f"✅ 商品名称验证通过: {target_item['name']}")
+            f"商品名称不正确，期望 '{product_name}'，实际 '{target_item['name']}'"
+        logger.info(f"商品名称验证通过: {target_item['name']}")
 
         # 6. 验证商品价格
         assert target_item["price"] == expected_price, \
-            f"❌ 商品价格不正确，期望 '{expected_price}'，实际 '{target_item['price']}'"
-        logger.info(f"✅ 商品价格验证通过: {target_item['price']}")
+            f"商品价格不正确，期望 '{expected_price}'，实际 '{target_item['price']}'"
+        logger.info(f"商品价格验证通过: {target_item['price']}")
 
         # 7. 验证商品数量
         assert target_item["quantity"] == "1", \
-            f"❌ 商品数量不正确，期望 '1'，实际 '{target_item['quantity']}'"
-        logger.info(f"✅ 商品数量验证通过: {target_item['quantity']}")
+            f"商品数量不正确，期望 '1'，实际 '{target_item['quantity']}'"
+        logger.info(f"商品数量验证通过: {target_item['quantity']}")
 
         # 8. 验证价格格式（应以 $ 开头）
         assert target_item["price"].startswith("$"), \
-            f"❌ 价格格式不正确，应以 $ 开头"
-        logger.info(f"✅ 价格格式验证通过")
+            f"价格格式不正确，应以 $ 开头"
+        logger.info(f"价格格式验证通过")
 
         # 9. 返回商品列表页
         self.cart_page.click_continue_shopping()
 
-        logger.info("✅ ===== 测试用例 5 通过 =====\n")
+        logger.info("===== 测试用例 5 通过 =====\n")
 
     # ==================== 测试用例 6: 继续购物和去结算功能 ====================
 
@@ -430,14 +430,14 @@ class TestCartManagement:
         测试数据：
             - 商品名称: "Sauce Labs Backpack"
         """
-        logger.info("🧪 ===== 测试用例 6: 继续购物和去结算按钮功能 =====")
+        logger.info("===== 测试用例 6: 继续购物和去结算按钮功能 =====")
 
         # 测试数据
         product_name = "Sauce Labs Backpack"
 
         # 1. 添加商品到购物车
         assert self.inventory_page.add_to_cart_by_name(product_name), \
-            f"❌ 添加商品 '{product_name}' 失败"
+            f"添加商品 '{product_name}' 失败"
 
         # 2. 进入购物车页面
         self.inventory_page.click_shopping_cart()
@@ -445,39 +445,39 @@ class TestCartManagement:
         # 3. 验证页面标题
         page_title = self.cart_page.get_page_title()
         assert page_title == "Your Cart", \
-            f"❌ 购物车页面标题不正确，期望 'Your Cart'，实际 '{page_title}'"
+            f"购物车页面标题不正确，期望 'Your Cart'，实际 '{page_title}'"
         logger.info(f"✅ 购物车页面标题验证通过: {page_title}")
 
         # 4. 点击"继续购物"按钮
         assert self.cart_page.click_continue_shopping(), \
-            "❌ 点击'继续购物'按钮失败"
+            "点击'继续购物'按钮失败"
 
         # 5. 验证已返回商品列表页
         assert self.inventory_page.is_page_loaded(), \
-            "❌ 未成功返回商品列表页"
-        logger.info("✅ '继续购物'功能验证通过，已返回商品列表页")
+            "未成功返回商品列表页"
+        logger.info("'继续购物'功能验证通过，已返回商品列表页")
 
         # 6. 再次进入购物车页面
         self.inventory_page.click_shopping_cart()
 
         # 7. 验证购物车内容保持不变
         assert self.cart_page.is_item_in_cart(product_name), \
-            f"❌ 点击'继续购物'后购物车内容丢失"
-        logger.info("✅ 购物车内容在'继续购物'后保持不变")
+            f"点击'继续购物'后购物车内容丢失"
+        logger.info("购物车内容在'继续购物'后保持不变")
 
         # 8. 点击"去结算"按钮（注：这里只验证跳转，不进行完整结算流程）
         assert self.cart_page.click_checkout(), \
-            "❌ 点击'去结算'按钮失败"
-        logger.info("✅ '去结算'按钮功能验证通过")
+            "点击'去结算'按钮失败"
+        logger.info("'去结算'按钮功能验证通过")
 
         # 9. 验证已跳转到结算页面（通过 URL 或页面元素判断）
         # 注意：这里只做简单验证，完整结算流程在其他测试用例中覆盖
         current_url = self.driver.current_url
         assert "checkout" in current_url, \
-            f"❌ 未跳转到结算页面，当前 URL: {current_url}"
-        logger.info(f"✅ 已成功跳转到结算页面: {current_url}")
+            f"未跳转到结算页面，当前 URL: {current_url}"
+        logger.info(f"已成功跳转到结算页面: {current_url}")
 
-        logger.info("✅ ===== 测试用例 6 通过 =====\n")
+        logger.info("===== 测试用例 6 通过 =====\n")
 
     # ==================== 测试后置清理 ====================
 
@@ -492,13 +492,13 @@ class TestCartManagement:
         Args:
             method: 当前执行的测试方法
         """
-        logger.info(f"🧹 ===== 测试后置清理: {method.__name__} =====")
+        logger.info(f"===== 测试后置清理: {method.__name__} =====")
 
         try:
             # 清空购物车
             self._clear_cart(self.driver)
-            logger.info("✅ 购物车已清空")
+            logger.info("购物车已清空")
         except Exception as e:
-            logger.warning(f"⚠️ 清理购物车时出错: {str(e)}")
+            logger.warning(f"️清理购物车时出错: {str(e)}")
 
-        logger.info(f"🧹 ===== 测试后置清理完成 =====\n")
+        logger.info(f"===== 测试后置清理完成 =====\n")

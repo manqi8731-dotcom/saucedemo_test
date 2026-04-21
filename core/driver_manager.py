@@ -42,7 +42,7 @@ class DriverManager:
         self.chromedriver_path = self._find_chromedriver()
         if not self.chromedriver_path:
             raise FileNotFoundError(
-                "❌ 未找到 ChromeDriver！请下载 ChromeDriver 147.0.7727.101 "
+                "未找到 ChromeDriver！请下载 ChromeDriver 147.0.7727.101 "
                 "并放置在 D:\\chromedriver\\ 目录下"
             )
 
@@ -57,10 +57,10 @@ class DriverManager:
 
         for path in possible_paths:
             if os.path.exists(path):
-                print(f"✅ 找到 ChromeDriver: {path}")
+                print(f"找到 ChromeDriver: {path}")
                 return path
 
-        print("❌ 未找到 ChromeDriver，请按以下步骤操作：")
+        print("未找到 ChromeDriver，请按以下步骤操作：")
         print("1. 访问: https://googlechromelabs.github.io/chrome-for-testing/")
         print("2. 搜索版本: 147.0.7727.101")
         print("3. 下载: ChromeDriver - Win64")
@@ -172,8 +172,8 @@ class DriverManager:
             return driver
 
         except Exception as e:
-            print(f"❌ Chrome 启动失败: {e}")
-            print("💡 提示：可能需要以管理员身份运行 PyCharm")
+            print(f"Chrome 启动失败: {e}")
+            print("提示：可能需要以管理员身份运行 PyCharm")
             raise e
 
     def quit(self):
@@ -194,22 +194,22 @@ def test_driver():
         manager = DriverManager(browser="chrome", headless=False)
         driver = manager.get_driver()
 
-        print("✅ Chrome 启动成功！")
+        print("Chrome 启动成功！")
 
         # 测试访问
         driver.get("https://www.google.com")
-        print(f"✅ Google 访问成功！标题: {driver.title[:50]}...")
+        print(f"Google 访问成功！标题: {driver.title[:50]}...")
 
         driver.get("https://www.saucedemo.com")
-        print(f"✅ SauceDemo 访问成功！标题: {driver.title}")
+        print(f"SauceDemo 访问成功！标题: {driver.title}")
 
-        print("🎉 驱动测试完全成功！")
+        print("驱动测试完全成功！")
         manager.quit()
         return True
 
     except Exception as e:
-        print(f"❌ 测试失败: {e}")
-        print("\n💡 建议解决方案：")
+        print(f"测试失败: {e}")
+        print("\n建议解决方案：")
         print("1. 以管理员身份运行 PyCharm")
         print("2. 确保 ChromeDriver 版本与 Chrome 版本完全匹配")
         print("3. 检查防火墙设置")
@@ -219,8 +219,8 @@ def test_driver():
 if __name__ == "__main__":
     success = test_driver()
     if success:
-        print("\n🎉 所有测试通过！可以继续开发。")
+        print("\n所有测试通过！可以继续开发。")
     else:
-        print("\n❌ 请按照提示解决问题后再试。")
+        print("\n请按照提示解决问题后再试。")
 
 

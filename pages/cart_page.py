@@ -53,7 +53,7 @@ class CartPage(BasePage):
             driver: WebDriver 实例
         """
         super().__init__(driver)
-        logger.info("✅ 初始化 CartPage - 购物车页面对象")
+        logger.info("初始化 CartPage - 购物车页面对象")
 
     # ==================== 页面基本信息 ====================
 
@@ -69,10 +69,10 @@ class CartPage(BasePage):
         """
         try:
             title = self.get_text(self.PAGE_TITLE)
-            logger.info(f"📄 购物车页面标题: {title}")
+            logger.info(f"购物车页面标题: {title}")
             return title
         except Exception as e:
-            logger.error(f"❌ 获取页面标题失败: {str(e)}")
+            logger.error(f"获取页面标题失败: {str(e)}")
             return ""
 
     def is_empty(self):
@@ -86,7 +86,7 @@ class CartPage(BasePage):
             # 检查是否存在购物车商品项
             return not self.is_element_visible(self.CART_ITEMS)
         except Exception as e:
-            logger.error(f"❌ 检查购物车是否为空失败: {str(e)}")
+            logger.error(f"检查购物车是否为空失败: {str(e)}")
             return True
 
     # ==================== 购物车商品操作 ====================
@@ -103,15 +103,15 @@ class CartPage(BasePage):
         """
         try:
             if self.is_empty():
-                logger.info("🛒 购物车为空，商品数量: 0")
+                logger.info("购物车为空，商品数量: 0")
                 return 0
 
             elements = self.find_elements(self.CART_ITEMS)
             count = len(elements)
-            logger.info(f"🛒 购物车中商品种类数量: {count}")
+            logger.info(f"购物车中商品种类数量: {count}")
             return count
         except Exception as e:
-            logger.error(f"❌ 获取购物车商品数量失败: {str(e)}")
+            logger.error(f"获取购物车商品数量失败: {str(e)}")
             return 0
 
     def get_all_cart_item_names(self):
@@ -127,15 +127,15 @@ class CartPage(BasePage):
         """
         try:
             if self.is_empty():
-                logger.info("🛒 购物车为空，无商品名称")
+                logger.info("购物车为空，无商品名称")
                 return []
 
             elements = self.find_elements(self.ITEM_NAME)
             item_names = [el.text for el in elements]
-            logger.info(f"📦 购物车商品列表: {item_names}")
+            logger.info(f"购物车商品列表: {item_names}")
             return item_names
         except Exception as e:
-            logger.error(f"❌ 获取购物车商品名称列表失败: {str(e)}")
+            logger.error(f"获取购物车商品名称列表失败: {str(e)}")
             return []
 
     def get_cart_item_details(self):
@@ -156,7 +156,7 @@ class CartPage(BasePage):
         """
         try:
             if self.is_empty():
-                logger.info("🛒 购物车为空，无商品详情")
+                logger.info("购物车为空，无商品详情")
                 return []
 
             cart_items = self.find_elements(self.CART_ITEMS)
@@ -188,14 +188,14 @@ class CartPage(BasePage):
                     })
 
                 except Exception as e:
-                    logger.warning(f"⚠️ 获取单个商品详情失败: {str(e)}")
+                    logger.warning(f"获取单个商品详情失败: {str(e)}")
                     continue
 
-            logger.info(f"📋 购物车商品详情: {details}")
+            logger.info(f"购物车商品详情: {details}")
             return details
 
         except Exception as e:
-            logger.error(f"❌ 获取购物车商品详情失败: {str(e)}")
+            logger.error(f"获取购物车商品详情失败: {str(e)}")
             return []
 
     def remove_item_by_name(self, product_name):
@@ -233,11 +233,11 @@ class CartPage(BasePage):
             # 等待元素消失
             self.wait_for_element_invisibility(product_locator)
 
-            logger.info(f"✅ 已从购物车移除商品: {product_name}")
+            logger.info(f"已从购物车移除商品: {product_name}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ 从购物车移除商品 '{product_name}' 失败: {str(e)}")
+            logger.error(f"从购物车移除商品 '{product_name}' 失败: {str(e)}")
             return False
 
     def is_item_in_cart(self, product_name):
@@ -257,7 +257,7 @@ class CartPage(BasePage):
             )
             return self.is_element_visible(product_locator)
         except Exception as e:
-            logger.error(f"❌ 检查商品 '{product_name}' 是否在购物车中失败: {str(e)}")
+            logger.error(f"检查商品 '{product_name}' 是否在购物车中失败: {str(e)}")
             return False
 
     # ==================== 按钮操作 ====================
@@ -271,10 +271,10 @@ class CartPage(BasePage):
         """
         try:
             self.click_element(self.CONTINUE_SHOPPING_BUTTON)
-            logger.info("🛍️ 点击'继续购物'，返回商品列表页")
+            logger.info("点击'继续购物'，返回商品列表页")
             return True
         except Exception as e:
-            logger.error(f"❌ 点击'继续购物'按钮失败: {str(e)}")
+            logger.error(f"点击'继续购物'按钮失败: {str(e)}")
             return False
 
     def click_checkout(self):
@@ -286,10 +286,10 @@ class CartPage(BasePage):
         """
         try:
             self.click_element(self.CHECKOUT_BUTTON)
-            logger.info("💳 点击'去结算'，跳转到结算页面")
+            logger.info("点击'去结算'，跳转到结算页面")
             return True
         except Exception as e:
-            logger.error(f"❌ 点击'去结算'按钮失败: {str(e)}")
+            logger.error(f"点击'去结算'按钮失败: {str(e)}")
             return False
 
     # ==================== 购物车验证 ====================
@@ -313,14 +313,14 @@ class CartPage(BasePage):
             # 检查是否包含所有期望商品
             for item in expected_items:
                 if item not in actual_items:
-                    logger.error(f"❌ 购物车缺少商品: {item}")
+                    logger.error(f"购物车缺少商品: {item}")
                     return False
 
-            logger.info(f"✅ 购物车验证通过，包含所有期望商品: {expected_items}")
+            logger.info(f"购物车验证通过，包含所有期望商品: {expected_items}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ 验证购物车内容失败: {str(e)}")
+            logger.error(f"验证购物车内容失败: {str(e)}")
             return False
 
     def verify_cart_empty(self):
@@ -333,10 +333,10 @@ class CartPage(BasePage):
         try:
             is_empty = self.is_empty()
             if is_empty:
-                logger.info("✅ 购物车为空，验证通过")
+                logger.info("购物车为空，验证通过")
             else:
-                logger.error("❌ 购物车不为空，验证失败")
+                logger.error("购物车不为空，验证失败")
             return is_empty
         except Exception as e:
-            logger.error(f"❌ 验证购物车为空失败: {str(e)}")
+            logger.error(f"验证购物车为空失败: {str(e)}")
             return False

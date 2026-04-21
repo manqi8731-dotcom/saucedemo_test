@@ -140,7 +140,7 @@ class BasePage:
             )
         except Exception as e:
             # 现在可以安全使用 self.logger 了
-            self.logger.error(f"❌ 等待元素可见失败 {locator}: {e}")
+            self.logger.error(f"等待元素可见失败 {locator}: {e}")
             return None
     def wait_for_element_clickable(self, locator, timeout=10):
         """
@@ -159,7 +159,7 @@ class BasePage:
             )
             return element
         except Exception as e:
-            self.logger.error(f"❌ 等待元素可点击失败: {locator}, 错误: {str(e)}")
+            self.logger.error(f"等待元素可点击失败: {locator}, 错误: {str(e)}")
             return None
 
     def scroll_to_element(self, locator):
