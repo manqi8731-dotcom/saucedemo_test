@@ -80,4 +80,4 @@ allure serve ./allure-results
 
 ## 六、报告展示
 
-`![Allure Report](report_images/screenshot1.png)`
+![Allure Report](report_images/screenshot1.png)
