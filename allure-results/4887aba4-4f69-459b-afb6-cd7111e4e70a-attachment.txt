@@ -1,3 +1,0 @@
-用户locked_out_user登录失败，错误提示正确
-截图已保存：D:\PythonWorkSpace\saucedemo_test\screenshots\login_locked_out_user_20260424_101548.png
-失败截图：D:\PythonWorkSpace\saucedemo_test\screenshots\login_locked_out_user_20260424_101548.png

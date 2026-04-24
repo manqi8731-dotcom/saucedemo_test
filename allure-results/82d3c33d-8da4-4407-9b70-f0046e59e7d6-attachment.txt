@@ -1,4 +1,0 @@
-找到 ChromeDriver: D:\chromedriver\chromedriver.exe
-用户standard_user登录成功
-截图已保存：D:\PythonWorkSpace\saucedemo_test\screenshots\login_standard_user_20260424_101546.png
-成功截图：D:\PythonWorkSpace\saucedemo_test\screenshots\login_standard_user_20260424_101546.png

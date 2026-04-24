@@ -1,1 +1,0 @@
-ERROR    pages.cart_page:cart_page.py:240 从购物车移除商品 'Sauce Labs Fleece Jacket' 失败: 'CartPage' object has no attribute 'wait_for_element_invisibility'
