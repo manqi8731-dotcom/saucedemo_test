@@ -1,4 +1,4 @@
-# 1. UI 自动化测试专属（新增）
+# 1. UI 自动化测试专属
 
 .idea/
 allure-results/
@@ -49,7 +49,7 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# 4. 虚拟环境（非常重要，防止上传几百 MB 的依赖包）
+# 4. 虚拟环境
 
 .env
 .envrc
@@ -68,7 +68,7 @@ venv.bak/
 *.swp
 *.tst
 
-# 6. 其他（Django, Flask, Jupyter 等，保留以备不时之需）
+# 6. 其他
 
 db.sqlite3
 db.sqlite3-journal
