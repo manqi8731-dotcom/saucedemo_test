@@ -79,3 +79,5 @@ allure serve ./allure-results
    * 完成下单流程及成功页面状态验证。
 
 ## 六、报告展示
+
+`![Allure Report](images/测试报告截图1.png)`
