@@ -1,0 +1,1 @@
+WARNING  pages.inventory_page:inventory_page.py:217 商品 'Sauce Labs Bike Light' 的 Remove 按钮不存在，商品可能未在购物车中

@@ -1,0 +1,2 @@
+ERROR    pages.cart_page:cart_page.py:240 从购物车移除商品 'Sauce Labs Backpack' 失败: 'CartPage' object has no attribute 'wait_for_element_invisibility'
+INFO     conftest:conftest.py:54 浏览器已关闭

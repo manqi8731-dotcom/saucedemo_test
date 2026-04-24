@@ -1,0 +1,1 @@
+INFO     conftest:conftest.py:54 浏览器已关闭

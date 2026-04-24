@@ -1,0 +1,1 @@
+INFO     conftest:conftest.py:47 浏览器启动成功：CHROME, 无头模式：False

@@ -1,12 +1,14 @@
 import pytest
+import allure
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 
-
+@allure.feature("结账功能")
 class TestCheckout:
 
+    @allure.story("成功结账流程")
     def test_checkout_success(self, driver):
         # 1.打开登录页面并登录
         login = LoginPage(driver)
@@ -44,6 +46,7 @@ class TestCheckout:
         success = checkout.get_success_text()
         assert "Thank you for your order" in success
 
+    @allure.story("必填信息验证")
     def test_checkout_info_required(self, driver):
         # 1.打开登录页面并登录
         login = LoginPage(driver)
@@ -64,6 +67,8 @@ class TestCheckout:
         assert "Error" in error
 
     # 金额计算
+    @allure.story("金额计算验证")
+    @allure.description("验证商品总额 + 税额 = 总金额")
     def test_checkout_price_calculation(self, driver):
         # 1.打开登录页面并登录
         login = LoginPage(driver)

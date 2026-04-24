@@ -5,16 +5,19 @@
 3.验证失败登录
 4.参数化测试
 """
+import allure
 import pytest
 from pages.login_page import LoginPage
 from utils.data_loader import DataLoader
 import time
 
 @pytest.mark.usefixtures("driver")
+@allure.feature("用户登录功能")
 class TestLogin:
     """登录功能测试类"""
 
     @pytest.mark.parametrize("user_data", DataLoader.get_test_users())
+    @allure.story("不同用户登录验证")
     def test_user_login(self, user_data):
         """
         测试用户登录
@@ -64,6 +67,7 @@ class TestLogin:
             print(f"测试异常，截图已保存：{screenshots_path}")
             raise e
 
+    @allure.story("页面标题验证")
     def test_page_title(self):
         """测试页面标题"""
         login_page = LoginPage(self.driver)
@@ -79,6 +83,7 @@ class TestLogin:
         )
         print(f"页面标题正确: {actual_title}")
 
+    @allure.story("标准用户完整流程")
     def test_standard_user_flow(self):
         """标准用户完整流程测试"""
         login_page = LoginPage(self.driver)

@@ -17,7 +17,7 @@ test_cart.py - 购物车管理功能测试用例
 
 import pytest
 import logging
-
+import allure
 from selenium.webdriver.common.by import By
 
 from pages.login_page import LoginPage
@@ -27,6 +27,7 @@ from pages.cart_page import CartPage
 logger = logging.getLogger(__name__)
 
 
+@allure.feature("购物车管理功能")
 @pytest.mark.usefixtures("driver")
 class TestCartManagement:
     """购物车管理功能测试类"""
@@ -101,6 +102,7 @@ class TestCartManagement:
 
     # ==================== 测试用例 1: 添加单个商品 ====================
 
+    @allure.story("添加单个商品到购物车")
     def test_add_single_product_to_cart(self):
         """
         测试场景：添加单个商品到购物车
@@ -153,6 +155,7 @@ class TestCartManagement:
 
     # ==================== 测试用例 2: 移除单个商品 ====================
 
+    @allure.story("从购物车移除单个商品")
     def test_remove_single_product_from_cart(self):
         """
         测试场景：从购物车中移除单个商品
@@ -210,6 +213,7 @@ class TestCartManagement:
 
     # ==================== 测试用例 3: 添加多个商品 ====================
 
+    @allure.story("添加多个商品到购物车")
     def test_add_multiple_products_to_cart(self):
         """
         测试场景：添加多个不同商品到购物车
@@ -275,6 +279,7 @@ class TestCartManagement:
 
     # ==================== 测试用例 4: 跨页面购物车状态保持 ====================
 
+    @allure.story("跨页面购物车状态保持")
     def test_cart_persistence_across_pages(self):
         """
         测试场景：验证购物车状态在跨页面操作时保持
@@ -348,6 +353,7 @@ class TestCartManagement:
 
     # ==================== 测试用例 5: 购物车详情验证 ====================
 
+    @allure.story("购物车商品详情验证")
     def test_cart_item_details_verification(self):
         """
         测试场景：验证购物车中商品的详细信息
@@ -416,6 +422,7 @@ class TestCartManagement:
 
     # ==================== 测试用例 6: 继续购物和去结算功能 ====================
 
+    @allure.story("继续购物和去结算按钮功能")
     def test_continue_shopping_and_checkout_buttons(self):
         """
         测试场景：验证"继续购物"和"去结算"按钮功能

@@ -10,6 +10,7 @@ from core.driver_manager import DriverManager
 from core.logger import setup_logger
 import os
 import time
+import allure
 
 # 设置日志
 logger = setup_logger("conftest")
@@ -85,12 +86,26 @@ def pytest_runtest_makereport(item, call):
                 os.makedirs(screenshots_dir, exist_ok=True)
 
                 screenshot_path = os.path.join(screenshots_dir, f"{screenshots_name}.png")
-
+                driver.save_screenshot(screenshot_path)     # 先保存截图文件
                 logger.error(f"失败截图已保存：{screenshot_path}")
 
                 # 将截图路径添加到测试报告
                 if hasattr(rep, 'sections'):
                     rep.sections.append(("失败截图", screenshot_path))
+
+                    # 自动附加到Allure报告
+                    try:
+                        with open(screenshot_path, "rb") as f:
+                            screenshot_data = f.read()
+                            allure.attach(
+                                screenshot_data,
+                                name=f"Failure Screenshot - {test_name}",
+                                attachment_type=allure.attachment_type.PNG
+                            )
+                        logger.info("失败截图已附加到Allure报告")
+                    except Exception as allure_error:
+                        logger.warning(f"附加截图到Allure失败: {str(allure_error)}")
+
         except Exception as e:
             logger.error(f"保存失败截图时出错：{str(e)}")
 

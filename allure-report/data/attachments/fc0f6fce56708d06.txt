@@ -1,0 +1,3 @@
+用户problem_user登录成功
+截图已保存：D:\PythonWorkSpace\saucedemo_test\screenshots\login_problem_user_20260424_101549.png
+成功截图：D:\PythonWorkSpace\saucedemo_test\screenshots\login_problem_user_20260424_101549.png
